@@ -1,20 +1,19 @@
 <template>
-  <div id="app">
-    <Index msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="app">
+        <Head></Head>
+        <router-view></router-view>
+    </div>
 </template>
 
 <script>
-import Index from '@/pages/main/index.vue'
-
-export default {
-  name: 'App',
-  components: {
-    Index
+  import Head from '@/components/common/Head'  
+  export default {
+    name: 'App',
+    components:{
+      Head
+    }
   }
-}
 </script>
-
 <style>
-
+    
 </style>

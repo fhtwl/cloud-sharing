@@ -4,14 +4,14 @@
             <div class="logo"><img src="@/assets/images/logo.png" alt=""></div>
             <el-menu
                 :default-active="activeIndex"
-                class="el-menu-demo"
+                class="el-menu"
                 mode="horizontal"
                 @select="handleSelect"
                 background-color="#fff"
                 text-color="#333"
                 active-text-color="#409EFF">
-                <el-menu-item index="1">首页</el-menu-item>
-                <el-menu-item index="2"><a href="/" target="_blank">支付功能</a></el-menu-item>
+                <el-menu-item index="1"><router-link to="/home">首页</router-link></el-menu-item>
+                <el-menu-item index="2"><router-link to="/login">登录</router-link></el-menu-item>
                 <el-menu-item index="3"><a href="https://github.com/fhtwl" target="_blank">联系我们</a></el-menu-item>
             </el-menu>
         </div>
