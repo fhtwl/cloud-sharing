@@ -109,7 +109,7 @@ service.interceptors.response.use(
     // 在请求完成后，自动移出队列
     removeQueue(response.config);
     // 关闭全局按钮Loading响应
-    store.dispatch('CancalLoading');
+    // store.dispatch('CancalLoading');
     // 错误码处理
     if (response.status !== 200) {
       return Promise.reject(response);

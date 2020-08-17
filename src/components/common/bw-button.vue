@@ -55,6 +55,8 @@ export default {
     position: relative;
     z-index: 100;
     border-radius: 4px;
+    height: 40px;
+    box-sizing: border-box;
 }
 .box .btn {
     width: 100%;
@@ -64,7 +66,7 @@ export default {
     text-align: center;
     box-sizing: border-box;
     /* background: #dcf0ee; */
-    color: #808080;
+    color: $color;
     cursor: pointer;
     border-right: 1px solid $color;
     position: relative;

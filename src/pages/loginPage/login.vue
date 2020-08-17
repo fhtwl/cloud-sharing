@@ -3,8 +3,8 @@
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="form" size="samll">
 		<div class="login-title">登录</div>
 		<div class="content">
-			<el-form-item prop="email">
-			<el-input v-model.number="ruleForm.email" placeholder="请输入邮箱"></el-input>
+			<el-form-item prop="userName">
+			<el-input v-model="ruleForm.userName" placeholder="请输入用户名"></el-input>
 			</el-form-item>
 			<el-form-item prop="password">
 				<el-input type="password" v-model="ruleForm.password" autocomplete="off" placeholder="请输入密码"></el-input>
@@ -34,7 +34,7 @@
 					password: [
 						{ required: true, trigger: 'blur' }
 					],
-					email: [
+					userName: [
 						{ required: true, trigger: 'blur' }
 					],
 				}
@@ -42,11 +42,29 @@
 		},
 		methods: {
 			submitForm(formName) {
-				this.$refs[formName].validate((valid) => {
+				this.$refs[formName].validate(async (valid) => {
 				if (valid) {
 					// alert('submit!');
 					console.log(login)
-					login()
+					let res = await login({
+						userName:this.ruleForm.userName,
+						password:this.ruleForm.password
+					})
+					if(res.success) {
+						//登录成功
+						this.$message({
+							showClose: true,
+							message: '登录成功',
+							type: 'success'
+						});
+					}
+					else {
+						this.$message({
+							showClose: true,
+							message: '登录失败',
+							type: 'error'
+						});
+					}
 				} else {
 					console.log('error submit!!');
 					return false;
@@ -72,7 +90,7 @@
 			height:280px;
 			background:#fff;
 			border-radius: 6px;
-			box-shadow: 0 0 6px 3px #e5e5e5;
+			box-shadow:0px 2px 12px 6px rgba(3,5,27,0.06);
 			.login-title {
 				font-size: 2em;
 				font-family: PingFangSC-Medium, PingFang SC;

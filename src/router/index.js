@@ -6,6 +6,7 @@ import store from 'vuex';
 
 import home from '@/pages/home/home.vue'
 import login from '@/pages/loginPage/login.vue'
+import register from '@/pages/loginPage/register.vue'
 import about from '@/pages/about/about.vue'
 
 Vue.use(Router)
@@ -27,6 +28,11 @@ const routes =  [
 		component: login
 	},
 	{
+		path: '/register',
+		name: 'register',
+		component: register
+	},
+	{
 		path: '/about',
 		name: 'about',
 		component: about
@@ -38,7 +44,7 @@ var router = new Router({
     routes
 })
 
-const whiteList = '/home,/login,/about'
+const whiteList = '/home,/login,/register,/about'
 
 router.beforeEach(async(to, from, next) => {
     NProgress.start();
