@@ -19,6 +19,17 @@ Vue.config.productionTip = false
 import $http from '@/utils/http';
 Vue.prototype.$http = $http
 
+import { msgAlert, messages } from './utils/msg-box.js';
+Vue.prototype.$messages = messages;
+Vue.prototype.$msgAlert = msgAlert;
+
+// import VueShowdown from 'vue-showdown'
+// Vue.use(VueShowdown, {
+//   flavor: 'github',
+//   options: {
+//     emoji: true
+//   }
+// })
 let vm = new Vue({
   router,
   store,

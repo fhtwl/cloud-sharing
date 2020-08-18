@@ -27,22 +27,36 @@ export default {
 		text: {
 			type: String,
 			default: '登录'
+        },
+        disabled: {
+			type: Boolean,
+			default: false
 		},
 	},
 	methods: {
 		moveBtn() {
-			this.animate = true
+            if(!this.disabled) {
+                this.animate = true
+            }
+			
 		},
 		downBtn(e) {
+            if(!this.disabled) {
+                let x = e.offsetX;
+                let y = e.offsetY;
+                this.$refs.cover.style.top = y + "px";
+                this.$refs.cover.style.left = x + "px";
+                this.animate = false
+            }
 			//   console.log(e);
-			let x = e.offsetX;
-			let y = e.offsetY;
-			this.$refs.cover.style.top = y + "px";
-			this.$refs.cover.style.left = x + "px";
-			this.animate = false
+			
 		},
 		clickBtn() {
-			this.animate = true
+            if(!this.disabled) {
+                this.animate = true
+                this.$emit('click')
+            }
+            
 		}
 	}
 };

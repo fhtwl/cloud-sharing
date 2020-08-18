@@ -53,6 +53,12 @@
 				icon: ''
 			},
 			{
+				to: '/user',
+				text: '我的',
+				href: '',
+				icon: ''
+			},
+			{
 				to: '',
 				text: '联系我们',
 				href: 'https://github.com/fhtwl/cloud-sharing',

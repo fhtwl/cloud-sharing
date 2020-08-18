@@ -8,6 +8,7 @@ import home from '@/pages/home/home.vue'
 import login from '@/pages/loginPage/login.vue'
 import register from '@/pages/loginPage/register.vue'
 import about from '@/pages/about/about.vue'
+import user from '@/pages/user/user.vue'
 
 Vue.use(Router)
 
@@ -36,15 +37,28 @@ const routes =  [
 		path: '/about',
 		name: 'about',
 		component: about
+	},
+    {
+		path: '/user',
+		name: 'user',
+		component: user,
+		children: [
+			{
+				path: '/blog',
+				name: 'blog',
+				component: ()=> import('@/pages/user/blog/blog.vue')
+			}
+		]
 	}
     
     
 ]
 var router = new Router({
+	// mode: "history",
     routes
 })
 
-const whiteList = '/home,/login,/register,/about'
+const whiteList = '/home,/login,/register,/about,/user,/blog'
 
 router.beforeEach(async(to, from, next) => {
     NProgress.start();

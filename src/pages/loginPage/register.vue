@@ -18,11 +18,11 @@
              <el-form-item prop="code">
                 <div class="code">
                     <el-input class='input' v-model="ruleForm.code" placeholder="请输入验证码"></el-input>
-                    <bwButton class="code-btn" text="验证码"></bwButton>
+                    <bwButton @click="sendCode" :disabled="codeDisabled" class="code-btn" :text="btnText"></bwButton>
                 </div>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="submitForm('ruleForm')" class='login-btn'>注册</el-button>
+				<el-button :loading="btn" type="primary" @click="submitForm('ruleForm')" class='login-btn'>注册</el-button>
 			</el-form-item>
             <div class="agreement">
                 <p>点击 “注册” 即表示您同意并愿意遵守 {{ subject }}</p>
@@ -68,7 +68,7 @@
 						{ validator: validatePass ,required: true, trigger: 'blur', min: 6, max: 24 }
 					],
 					userName: [
-						{ required: true, trigger: 'blur',message:"用户名长度至少为6位，最多为24位", min: 4, max: 32 }
+						{ required: true, trigger: 'blur',message:"用户名长度至少为4位，最多为24位", min: 4, max: 32 }
                     ],
                     phone: [
 						{ required: true, trigger: 'blur',message:"请输入正确的手机号" ,pattern:/^1[345678]{1}\d{9}$/}
@@ -77,12 +77,21 @@
 						{ required: true, trigger: 'blur',message:"请输入正确的验证码" ,min: 4, max: 8 }
 					],
                 },
-                subject: this.$store.getters.getSubject
+                subject: this.$store.getters.getSubject,
+                time:60,
+                btnText: '验证码',
+                timer:null,
+                codeDisabled:false
 			};
+        },
+        computed: {
+			btn() {
+				return this.$store.state.loading;
+			}
 		},
 		methods: {
             async checkUserName() {
-                if(this.ruleForm.userName.length > 4 ) {
+                if(this.ruleForm.userName.length >= 4 ) {
                     let userName = this.ruleForm.userName
                     let res = await checkUserName({
                         userName
@@ -106,6 +115,7 @@
                 }
             },
 			async submitForm(formName) {
+                this.$store.commit('setLoading');
 				this.$refs[formName].validate(async (valid) => {
 				if (valid) {
                     let userName = this.ruleForm.userName,
@@ -138,7 +148,25 @@
 			},
 			resetForm(formName) {
 				this.$refs[formName].resetFields();
-			}
+            },
+            sendCode() {
+                if(!this.codeDisabled) {
+                    this.codeDisabled = true
+                    this.btnText = this.time.toString()
+                    this.timer = setInterval(()=> {
+                        this.time--
+                        if(this.time == 0) {
+                            this.btnText = '验证码'
+                            this.codeDisabled = false
+                            clearInterval(this.timer)
+                        }
+                        else {
+                            this.btnText = this.time.toString()
+                        }
+                    },1000)
+                }
+                
+            }
 		}
 	}
 </script>

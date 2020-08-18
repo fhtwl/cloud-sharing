@@ -10,7 +10,7 @@
 				<el-input type="password" v-model="ruleForm.password" autocomplete="off" placeholder="请输入密码"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="submitForm('ruleForm')" class='login-btn'>提交</el-button>
+				<el-button :loading="btn" type="primary" @click="submitForm('ruleForm')" class='login-btn'>提交</el-button>
 			</el-form-item>
 			<!-- <bw-button @click="submitForm('ruleForm')"></bw-button> -->
 		</div>
@@ -23,6 +23,11 @@
 	export default {
 		components: {
 			// bwButton
+		},
+		computed: {
+			btn() {
+				return this.$store.state.loading;
+			}
 		},
 		data() {
 			return {
@@ -42,6 +47,7 @@
 		},
 		methods: {
 			submitForm(formName) {
+				this.$store.commit('setLoading');
 				this.$refs[formName].validate(async (valid) => {
 				if (valid) {
 					// alert('submit!');

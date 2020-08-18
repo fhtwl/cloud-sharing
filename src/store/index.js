@@ -11,7 +11,8 @@ const store = new Vuex.Store({
 		userinfo: {},
 		// API:'http://g278828097.picp.vip/share/'
 		API: '/api/share',
-		subject: 'cloud-share'
+		subject: 'cloud-share',
+		loading: false
 	},
 	getters: {
 		api:state => {//通过方法访问
@@ -19,11 +20,17 @@ const store = new Vuex.Store({
 		},
 		getSubject:state => {//通过方法访问
 			return state.subject
-		}
+		},
 	},
 	mutations: {
 		changeMarketPageName(state, data) {
 			state.marketPageName = data;
+		},
+		setLoading: state => {
+			state.loading = true
+		},
+		cancalLoading: state => {
+			state.loading = false
 		}
 	}
 })

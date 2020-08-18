@@ -82,6 +82,21 @@ const errorHandle = response => {
   messages('error', msg);
 };
 
+/**
+ * 修改开发环境下mock配置
+ * @param {Object} config 请求配置
+ */
+const mockApi = config => {
+  if (process.env.NODE_ENV === 'development') {
+    const isMock = config.url.includes('/mock');
+    if (isMock) {
+      const api = config.url.match(/\/api(.+)/g);
+      config.url = `http://${window.location.host}${api}`;
+      return config;
+    }
+  }
+};
+
 // 请求拦截器
 service.interceptors.request.use(
   config => {
@@ -96,6 +111,7 @@ service.interceptors.request.use(
       config.headers['Authorization'] =
         store.getters.token.token_type + ' ' + store.getters.token.access_token;
     }
+    mockApi(config);
     return config;
   },
   error => {
@@ -109,7 +125,7 @@ service.interceptors.response.use(
     // 在请求完成后，自动移出队列
     removeQueue(response.config);
     // 关闭全局按钮Loading响应
-    // store.dispatch('CancalLoading');
+    store.commit('cancalLoading');
     // 错误码处理
     if (response.status !== 200) {
       return Promise.reject(response);
@@ -135,90 +151,166 @@ service.interceptors.response.use(
     }
   }
 );
-// export default = function (Vue) {
-// let base={}
-// base.install = function (Vue) {
-//     Vue.prototype.$http = {
-  // base = {
-    console.log(this)
-      const get =  (url, data = {}) => {
-        return new Promise((resolve, reject) => {
-          service
-            .get(store.getters.api + url, { params: data })
-            .then(response => {
-              resolve(response.data);
-            })
-            .catch(error => {
-              reject(error);
-            });
-        }).catch(error => {
-          throw new Error(error);
-        });
-      }
-      const post = (url, data = {}) => {
-        return new Promise((resolve, reject) => {
-          service
-            .post(store.getters.api + url, data, {
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-              },
-              withCredentials: true,
-              transformRequest: [
-                data => {
-                  return qs.stringify(data);
-                }
-              ]
-            })
-            .then(response => {
-              resolve(response.data);
-            })
-            .catch(error => {
-              reject(error);
-            });
-        }).catch(error => {
-          return Promise.reject(error);
-        });
-      }
-    //   ...
-    /**
-     * blob下载
-     * @param {String} url 请求地址
-     * @param {String} method 请求方式 默认`get`
-     * @param {Object} data 请求数据
-     */
-    const exportFile = ({ url = '', data = {}, method = 'get' }) =>{
-      return new Promise((resolve, reject) => {
-        const isPost =
-          method.toLocaleUpperCase() === 'POST'
-            ? {
-              headers: { 'Content-Type': 'application/json' },
-              data
-            }
-            : {
-              params: data
-            };
-        const downConfig = {
-          withCredentials: true,
-          responseType: 'blob',
-          ...isPost
-        };
-        service
-          // eslint-disable-next-line no-unexpected-multiline
-          [method](store.getters.api + url, downConfig)
-          .then(response => {
-            resolve(response);
-          })
-          .catch(error => {
-            reject(error);
-          });
-      }).catch(error => {
-        return Promise.reject(error);
-      });
-    }
-  // };
-// }
-
 
 export default {
-  get,post,exportFile
+  get: (url, data = {}) => {
+    return new Promise((resolve, reject) => {
+      service
+        .get(store.getters.api + url, { params: data })
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    }).catch(error => {
+      throw new Error(error);
+    });
+  },
+  post: (url, data = {}) => {
+    return new Promise((resolve, reject) => {
+      service
+        .post(store.getters.api + url, data, {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+          },
+          withCredentials: true,
+          transformRequest: [
+            data => {
+              return qs.stringify(data);
+            }
+          ]
+        })
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    }).catch(error => {
+      return Promise.reject(error);
+    });
+  },
+  put: (url, data = {}) => {
+    return new Promise((resolve, reject) => {
+      service
+        .put(store.getters.api + url, data, {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+          },
+          withCredentials: true,
+          transformRequest: [
+            data => {
+              return qs.stringify(data);
+            }
+          ]
+        })
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    }).catch(error => {
+      return Promise.reject(error);
+    });
+  },
+  putJson: (url, data = {}) => {
+    return new Promise((resolve, reject) => {
+      service
+        .put(store.getters.api.API + url, data, {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        })
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    }).catch(error => {
+      return Promise.reject(error);
+    });
+  },
+  postJson: (url, data = {}) => {
+    return new Promise((resolve, reject) => {
+      service
+        .post(store.getters.api.API + url, data, {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+        })
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    }).catch(error => {
+      return Promise.reject(error);
+    });
+  },
+  delete: (url, data = {}) => {
+    return new Promise((resolve, reject) => {
+      service
+        .delete(store.getters.api.API + url, {
+          data
+        })
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    }).catch(error => {
+      return Promise.reject(error);
+    });
+  },
+  deleteJson: (url, data = {}) => {
+    return new Promise((resolve, reject) => {
+      service
+        .delete(store.getters.api.API + url, {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+          data
+        })
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    }).catch(error => {
+      return Promise.reject(error);
+    });
+  },
+  /**
+   * blob下载
+   * @param {String} url 请求地址
+   * @param {String} method 请求方式 默认`get`
+   * @param {Object} data 请求数据
+   */
+  exportFile({ url = '', data = {}, method = 'get' }) {
+    return new Promise((resolve, reject) => {
+      const isPost = method.toLocaleUpperCase() === 'POST';
+      const postConfig = isPost
+        ? { headers: { 'Content-Type': 'application/json' }, data }
+        : { params: data };
+      const downConfig = {
+        withCredentials: true,
+        method: method.toLocaleLowerCase(),
+        responseType: 'blob',
+        ...postConfig
+      };
+      // eslint-disable-next-line no-unexpected-multiline
+      service(store.getters.api.API + url, downConfig)
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    }).catch(error => {
+      return Promise.reject(error);
+    });
+  }
 };
