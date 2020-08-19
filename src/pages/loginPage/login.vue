@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-	// import bwButton from '@/components/common/bw-button' 
+	// import bwButton from '@/components/common/bw-button'
 	import login from '@/api/user/login.js';
 	export default {
 		components: {
@@ -67,7 +67,7 @@
 					else {
 						this.$message({
 							showClose: true,
-							message: '登录失败',
+							message: res.errMsg,
 							type: 'error'
 						});
 					}
@@ -119,5 +119,5 @@
 			}
 		}
 	}
-	
+
 </style>

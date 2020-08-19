@@ -1,10 +1,10 @@
 <template>
 	<div class="body">
 		<mavon-editor
-		:toolbars="markdownOption" 
+		:toolbars="markdownOption"
 		@save="save"
 		v-model="html"
-		class="md-body"/>	
+		class="md-body"/>
 	</div>
 </template>
 <script>
@@ -81,7 +81,7 @@
 					preview: true, // 预览
 				},
 				btnText:"保存"
-				
+
 			};
 		},
 		watch: {
@@ -118,7 +118,7 @@
 </script>
 
 <style lang="scss" scoped>
-	
+
 	.body {
 		width: 100%;
 		min-height: calc(100vh - 100px);
