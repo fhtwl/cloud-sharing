@@ -42,13 +42,11 @@ const routes =  [
 		path: '/user',
 		name: 'user',
 		component: user,
-		children: [
-			{
-				path: '/blog',
-				name: 'blog',
-				component: ()=> import('@/pages/user/blog/blog.vue')
-			}
-		]
+	},
+	{
+		path: '/blog',
+		name: 'blog',
+		component: ()=> import('@/pages/blog/blog.vue')
 	}
     
     

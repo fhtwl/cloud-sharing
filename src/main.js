@@ -4,8 +4,7 @@ import store from './store'
 import './assets/common/css/common.css'
 import 'element-ui/lib/theme-chalk/index.css';
 
-
-
+import './assets/common/font/iconfont/iconfont.css';
 
 Vue.prototype.$store = store
 import router from './router'
@@ -22,6 +21,8 @@ Vue.prototype.$http = $http
 import { msgAlert, messages } from './utils/msg-box.js';
 Vue.prototype.$messages = messages;
 Vue.prototype.$msgAlert = msgAlert;
+
+
 
 // import VueShowdown from 'vue-showdown'
 // Vue.use(VueShowdown, {
